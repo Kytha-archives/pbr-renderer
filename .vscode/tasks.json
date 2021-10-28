@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "command": "bash",
+  "options": {
+    "cwd": "${workspaceRoot}"
+  },
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "PRODUCTION: Clean Build",
+      "command": "make",
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "type": "shell",
+      "label": "DEBUG: Clean Build",
+      "command": "make debug",
+      "problemMatcher": ["$gcc"],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
