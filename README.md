@@ -1,3 +1,24 @@
+# About
+
+a lightweight implementation of a physically based shading model for an OpenGL renderer derived from models outlined by Walt Disney’s Animation Studio in 2012 and Unreal Engine 4 in 2013. The main goal of this project is to explore widely adopted, modern rendering techniques for realistic graphics. The ideal features of the project are outlined below.
+
+_Basic Features_
+
+- Load from disk obj/blend files containing mesh data
+- GLSL fragment and vertex shader compilation and execution
+- A PBR compliant material system capable of loading in albedo, normal, metallic, & roughness textures
+- PBR rendering Pipeline
+- Basic Camera controls
+
+_Advanced Features (time permitting)_
+
+- Load in HDR images to create environment cubemaps for IBL
+- Ambient occlusion
+- GUI for basic scene manipulation renderer setting controls
+
+An additional goal (time permitting) would be to benchmark the performance of different
+BDRF implementations, i.e, alternative normal distribution functions, geometry functions, etc. So, an ideal feature would be for the user to be able to hot swap different implementations during runtime.
+
 # Dependencies
 
 ## [GLFW](https://github.com/glfw/glfw) - Open Source, multi-platform library for OpenGL
