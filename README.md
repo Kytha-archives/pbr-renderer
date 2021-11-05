@@ -1,6 +1,6 @@
 # About
 
-a lightweight implementation of a physically based shading model for an OpenGL renderer derived from models outlined by Walt Disney’s Animation Studio in 2012 and Unreal Engine 4 in 2013. The main goal of this project is to explore widely adopted, modern rendering techniques for realistic graphics. The ideal features of the project are outlined below.
+A lightweight implementation of a physically based shading model for an OpenGL renderer derived from models outlined by Walt Disney’s Animation Studio in 2012 and Unreal Engine 4 in 2013. The main goal of this project is to explore widely adopted, modern rendering techniques for realistic graphics. The ideal features of the project are outlined below.
 
 _Basic Features_
 
