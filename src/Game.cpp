@@ -11,9 +11,9 @@ public:
     void OnAttach() override
     {
         m_Camera = new Camera(glm::perspectiveFov(glm::radians(45.0f), 1280.0f, 720.0f, 0.1f, 10000.0f));
-        m_Texture.reset(new Texture("./assets/textures/sofa_03_diff_4k.jpg"));
-        m_NormalTexture.reset(new Texture("./assets/textures/sofa_03_nor_gl_4k.jpg"));
-        m_Model.reset(new Model("./assets/models/sofa_03_4k.gltf"));
+        m_Texture.reset(new Texture("./assets/textures/marble_bust_01_diff_4k.jpg"));
+        m_NormalTexture.reset(new Texture("./assets/textures/marble_bust_01_nor_gl_4k.jpg"));
+        m_Model.reset(new Model("./assets/models/marble_bust_01_4k.gltf"));
 
         m_Model->getMaterial()->Set("u_AlbedoTexture", m_Texture);
         m_Model->getMaterial()->Set("u_NormalTexture", m_NormalTexture);
