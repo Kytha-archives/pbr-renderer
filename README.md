@@ -16,8 +16,9 @@ A lightweight implementation of a physically based shading model for an OpenGL r
 - Event loop for user input, window events (resize, etc), and application events (Update, etc) ✔️ 
 - Load from disk obj/blend files containing mesh data ✔️
 - GLSL fragment and vertex shader compilation, linking, and execution ✔️
+- Super basic directional lighting (ambient and diffuse) ✔️ 
 - A PBR compliant material system capable of loading in albedo, normal, metallic, & roughness textures 🚧
-- PBR rendering Pipeline 🚧
+- PBR pipeline & shader programs 🚧
 
 **Advanced Features (time permitting)**
 
@@ -25,7 +26,7 @@ A lightweight implementation of a physically based shading model for an OpenGL r
 - Ambient occlusion 🛑
 - GUI for basic scene manipulation renderer setting controls ✔️
 - Shadow Mapping 🛑
-- Tone Mapping for ture HDR 🛑
+- Tone Mapping for true HDR 🛑
 - Gamma Correction 🛑
 
 An additional goal (time permitting) would be to benchmark the performance of different
@@ -78,3 +79,37 @@ sudo apt-get install assimp
 # Build
 
 run `make debug` to build the project in debug mode, or run `make`/`make production` to build the project in production mode. The build artifacts will be in the `build` directory.
+
+# Architecture
+
+The codebase is quite large and very flat, which does not help convey the relationships between objects and the system they create. This section is intended to help convey the system as a whole and explain the "how" of the engine. The next section- "Design Designs", focuses more on the "why".
+
+## Application System Relational Diagram  
+
+This diagram shows the general structure of the main components in the application flow. The Application is a singleton object, so it can only be instantiated once, and by doing so creates and owns a member Window. The Application also houses the main event loop where each layer in the layer stack is sequentially updated/rendered to the window.   
+
+The window object handles the OpenGL context, amongst other window properties (width, height, vsync, etc). This is where the engine interfaces with GLFW and GLAD to load in an OpenGL 4 context. By setting up callback functions, GLFW events are routed into the application where they are dispatched to the layer stack and polled by the input system.
+
+Each layer has the ability to poll inputs, update game/application logic, and render scenes via the Renderer. The Renderer is another singleton which any layer can interface with. A layer can upload an enviroment to the renderer (camera, lights, etc) and then submit any models to be rendered. 
+
+The Renderer also houses a library of shaders. These shaders get loaded, compiled, and linked at the beginning of run-time and are avalible for use by other modules.
+
+This is a general overview. More granular explanations can be found in the comments documenting the code.
+
+![image](https://user-images.githubusercontent.com/33584092/141251749-74959b11-774a-4e18-baad-570fdcb0307e.png)
+
+## Model & Material System Relational Diagram
+
+The diagram below depicts the architecture of the model / mesh / material system.
+
+![image](https://user-images.githubusercontent.com/33584092/141251215-83b1e876-6381-4b3e-98cd-393ec0a3963f.png)
+
+There are quite a few parts to this system. When instatiated, the model object will load in a assimp scene from a file on disk. It then processes this into multiple meshes. All vertex data for each mesh is processed into a vertex buffer with an opionated layout. At the minimum, the mesh must specify position and normal data for each vertex. The vertex buffer layout also accomadates for tangent, binormal, and texture coordinate data. The indices are also processed into an index buffer. These buffers are grouped togther to form a vertex array. In addition, Each mesh is capable of having it's own material (in future these materials would be in a shared library owned by the Model). Each material will be capable of storing multiple texture maps (albedo, normal, metallic, roughness). 
+
+The structure for the renderer was explained in the previous section, but this diagram demenstrates how the renderer relates to the model system. 
+
+## End-to-end Renderer Pipeline
+This diagram show's the end-to-end process of rendering a model, from program start-up, to the first frame rendering. This is a general overview of how models are loaded and rendered.
+![image](https://user-images.githubusercontent.com/33584092/141259777-33f69470-b0da-4692-a851-5210aafcd11f.png)
+
+
