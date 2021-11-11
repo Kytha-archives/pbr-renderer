@@ -1,4 +1,4 @@
-#include "core.h"
+#include "Core.h"
 #include "Engine.h"
 #include "Console.h"
 #include "DirectionalLight.h"

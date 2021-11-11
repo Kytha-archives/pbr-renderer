@@ -1,4 +1,4 @@
-#include "core.h"
+#include "Core.h"
 #include "Application.h"
 #include <GLFW/glfw3.h>
 #include "Renderer.h"

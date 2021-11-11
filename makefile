@@ -74,6 +74,6 @@ imgui:
 	$(MAKE) -C vendors/ImGui
 
 glad:
-	$(MAKE) -C vendors/Glad
+	$(MAKE) -C vendors/GLAD
 
 assets: $(patsubst $(ASSETDIR)/%,$(TARGETDIR)/$(ASSETDIR)/%,$(ASSETS))
