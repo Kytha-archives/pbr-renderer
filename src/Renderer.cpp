@@ -4,6 +4,18 @@
 
 Renderer::SceneData *Renderer::m_SceneData = new SceneData();
 
+ShaderLibrary *Renderer::s_ShaderLibrary = new ShaderLibrary();
+
+void Renderer::Init()
+{
+    s_ShaderLibrary->Load("./assets/shaders/test.glsl", "pbr_shader");
+}
+
+ShaderLibrary &Renderer::GetShaderLibrary()
+{
+    return *s_ShaderLibrary;
+}
+
 void Renderer::BeginScene(Camera &camera)
 {
     glEnable(GL_DEPTH_TEST);

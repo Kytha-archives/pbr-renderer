@@ -1,4 +1,5 @@
 #include "Model.h"
+#include "Renderer.h"
 
 Model::Model(const std::string &filepath)
 {
@@ -11,7 +12,7 @@ Model::Model(const std::string &filepath)
         return;
     }
     m_Directory = filepath.substr(0, filepath.find_last_of('/'));
-    m_Shader.reset(new Shader("./assets/shaders/test.glsl"));
+    m_Shader = Renderer::GetShaderLibrary().Get("pbr_shader");
     m_Material.reset(new Material(m_Shader));
     processNode(scene->mRootNode, scene);
 }

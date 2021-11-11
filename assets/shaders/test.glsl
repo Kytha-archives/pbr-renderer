@@ -19,6 +19,14 @@ void main()
 #version 330 core
 out vec4 FragColor;
 
+struct DirLight {
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};  
+
+
 in vec2 TexCoord;
 
 uniform sampler2D u_AlbedoTexture;
@@ -26,7 +34,23 @@ uniform sampler2D u_NormalTexture;
 uniform sampler2D u_MetalnessTexture;
 uniform sampler2D u_RoughnessTexture;
 
+uniform DirLight dirLight;
+uniform vec3 u_View;
+
 void main()
 {
-    FragColor = texture(u_AlbedoTexture, TexCoord);
-} 
+    // ambient
+    vec3 ambient = dirLight.ambient * vec3(texture(u_AlbedoTexture, TexCoord));
+
+    // diffuse 
+    vec3 norm = texture(u_NormalTexture, TexCoord).rgb;
+    norm = normalize(norm * 2.0 - 1.0);
+
+    vec3 direction = normalize(-dirLight.direction);
+    float diff = max(dot(norm, direction), 0.0);
+    vec3 diffuse = dirLight.diffuse * diff * vec3(texture(u_AlbedoTexture, TexCoord));
+
+    vec3 result = diffuse + ambient;
+    FragColor = vec4(result, 1.0);
+}
+

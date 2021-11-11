@@ -1,16 +1,18 @@
 #include "core.h"
 #include "Application.h"
 #include <GLFW/glfw3.h>
+#include "Renderer.h"
 
 #define BIND_EVENT_FN(x) std::bind(&Application::x, this, std::placeholders::_1)
 
-Application* Application::s_Instance = nullptr;
+Application *Application::s_Instance = nullptr;
 
 Application::Application()
 {
-    
-    // Enforcing a single instance of application 
-    if(s_Instance != nullptr) {
+
+    // Enforcing a single instance of application
+    if (s_Instance != nullptr)
+    {
         std::cout << "Application already exists!";
     }
     s_Instance = this;
@@ -18,19 +20,18 @@ Application::Application()
     m_Window = std::unique_ptr<Window>(Window::Create());
     m_Window->SetEventCallback(BIND_EVENT_FN(OnEvent));
     m_Window->Init();
+    Renderer::Init();
 
     // Parent ImGui Layer to wrap all ImGui rendering
     m_ImGuiLayer = new ImGuiLayer();
     PushOverlay(m_ImGuiLayer);
-
 }
 
 Application::~Application()
 {
-
 }
 
-void Application::OnEvent(Event& e)
+void Application::OnEvent(Event &e)
 {
     // Handle WindowClose event first
     EventDispatcher dispatcher(e);
@@ -48,19 +49,20 @@ void Application::OnEvent(Event& e)
 void Application::Run()
 {
     // MAIN APP LOOP
-    while (m_Running) {
+    while (m_Running)
+    {
 
         // Calculate Frame time and frame rate
-        float time = (float)glfwGetTime(); 
+        float time = (float)glfwGetTime();
         Timestep timestep = time - m_LastUpdateTime;
         m_LastUpdateTime = time;
 
         m_Profiler->Update(time, timestep);
         // Update all layers
-        for (Layer* layer : m_LayerStack)
+        for (Layer *layer : m_LayerStack)
             layer->OnUpdate(timestep);
         m_ImGuiLayer->Begin();
-        for (Layer* layer : m_LayerStack)
+        for (Layer *layer : m_LayerStack)
             layer->OnImGuiRender();
         m_ImGuiLayer->End();
 
@@ -68,19 +70,19 @@ void Application::Run()
     }
 }
 
-void Application::PushLayer(Layer* layer)
+void Application::PushLayer(Layer *layer)
 {
     m_LayerStack.PushLayer(layer);
     layer->OnAttach();
 }
 
-void Application::PushOverlay(Layer* layer)
+void Application::PushOverlay(Layer *layer)
 {
     m_LayerStack.PushOverlay(layer);
     layer->OnAttach();
 }
 
-bool Application::OnWindowClose(WindowCloseEvent& e)
+bool Application::OnWindowClose(WindowCloseEvent &e)
 {
     m_Running = false;
     return true;
