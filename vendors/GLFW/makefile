@@ -17,15 +17,17 @@ endif
 $(info $(SOURCES))
 
 OBJECTS := $(patsubst $(SRCDIR)%,$(BUILDDIR)%,$(SOURCES:.c=.o))
-TARGET= libglfw3.a
+TARGET= bin/libglfw3.a
 
 #run target to compile and build, and then launch the executable  
 
 #Link
 $(TARGET): $(OBJECTS)
-	ar -cvq $(TARGETDIR)/$(TARGET)  $^
+	$(shell [ ! -d $(@D) ] && mkdir -p $(@D))
+	ar -cvq $(TARGET)  $^
 
 
 #Compile
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
+	$(shell [ ! -d $(@D) ] && mkdir -p $(@D))
 	$(CC) $(CFLAGS) -c -o $@ $< $(INCLUDE) $(DEFINES)

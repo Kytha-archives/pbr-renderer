@@ -3,17 +3,22 @@
 // For use by applications to access engine API
 
 #include "Application.h"
-#include "Layer.h"
 
+// ---Input-------------------------
 #include "KeyEvent.h"
 #include "KeyCodes.h"
-
 #include "Input.h"
-#include "Camera.h"
+// ---------------------------------
 
+// ---GUI---------------------------
 #include "imgui.h"
+// ---------------------------------
 
+// ---MISC---------------------------
 #include "Timestep.h"
+#include "Camera.h"
+#include "Layer.h"
+// ---------------------------------
 
 // ---Rendering-------------------
 #include "Shader.h"
@@ -29,5 +34,3 @@
 // ---Entry Point-------------------
 #include "EntryPoint.h"
 // ---------------------------------
-
-

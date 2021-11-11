@@ -1,7 +1,7 @@
 #pragma once
 #include "core.h"
 #include "Event.h"
-#include "glad.h"
+#include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
 static bool s_GLFWInitialized;

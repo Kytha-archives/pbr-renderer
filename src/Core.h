@@ -15,7 +15,7 @@
 #include "Timestep.h"
 
 #ifdef PLATFORM_WINDOWS
-	#include <Windows.h>
+#include <Windows.h>
 #endif
 
 #define BIT(x) (1 << x)

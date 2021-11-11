@@ -1,4 +1,4 @@
-LIBS= -lGLU -lGL -lgdi32 -lassimp
+LIBS= vendors/GLFW/bin/libglfw3.a vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lGLU -lGL -lgdi32 -lassimp
 CFLAGS=-std=c++11
 CC=g++
 EXEEXT=
@@ -6,7 +6,7 @@ RM=rm
 TARGETDIR=build
 BUILDDIR=bin-int
 ASSETDIR=assets
-INCLUDE=-Ivendors/GLFW/include -Ivendors/glm/include
+INCLUDE=-Ivendors/GLFW/include -Ivendors/glm/include -Ivendors/ImGui/src -Ivendors/GLAD/include
 SRCDIR=src
 SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 ASSETS := $(wildcard $(ASSETDIR)/*)
@@ -14,17 +14,15 @@ $(info $(SOURCES))
 OBJECTS := $(patsubst $(SRCDIR)%,$(BUILDDIR)/%,$(SOURCES:.cpp=.o))
 TARGET= main
 
-$(info $(OBJECTS))
-
 # Windows (cygwin)
 ifeq "$(OS)" "Windows_NT"
 	EXEEXT=.exe
-	LIBS = vendors/GLFW/bin/libglfw3.a -lopengl32 -lgdi32 -lassimp
+	LIBS = vendors/GLFW/bin/libglfw3.a vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lopengl32 -lgdi32 -lassimp
 else
 # OS X
 	OS := $(shell uname)
 	ifeq ($(OS), Darwin)
-	        LIBS = -lassimp -framework Carbon -framework OpenGL -framework GLUT
+	        LIBS = vendors/GLFW/bin/libglfw3.a vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lassimp -framework Carbon -framework OpenGL -framework GLUT
 	endif
 endif
 
@@ -43,7 +41,7 @@ directories:
 	@mkdir -p $(TARGETDIR)/$(ASSETDIR)
 
 
-all: cleaner directories assets glfw $(TARGET)
+all: cleaner directories assets imgui glfw glad $(TARGET)
 
 link: $(TARGET)
 
@@ -71,5 +69,11 @@ $(TARGETDIR)/$(ASSETDIR)/%: $(ASSETDIR)/%
 
 glfw: 
 	$(MAKE) -C vendors/GLFW
+
+imgui:
+	$(MAKE) -C vendors/ImGui
+
+glad:
+	$(MAKE) -C vendors/Glad
 
 assets: $(patsubst $(ASSETDIR)/%,$(TARGETDIR)/$(ASSETDIR)/%,$(ASSETS))

@@ -33,9 +33,10 @@ Application::~Application()
 
 void Application::OnEvent(Event &e)
 {
-    // Handle WindowClose event first
+    // Handle WindowClose and WindowResize events first
     EventDispatcher dispatcher(e);
     dispatcher.Dispatch<WindowCloseEvent>(BIND_EVENT_FN(OnWindowClose));
+    dispatcher.Dispatch<WindowResizeEvent>(BIND_EVENT_FN(OnWindowResize));
 
     // Propagate events through layers starting with the uppermost layer
     for (auto it = m_LayerStack.end(); it != m_LayerStack.begin();)
@@ -58,9 +59,12 @@ void Application::Run()
         m_LastUpdateTime = time;
 
         m_Profiler->Update(time, timestep);
+
         // Update all layers
         for (Layer *layer : m_LayerStack)
             layer->OnUpdate(timestep);
+
+        // Render all ImGui UIs
         m_ImGuiLayer->Begin();
         for (Layer *layer : m_LayerStack)
             layer->OnImGuiRender();
@@ -86,4 +90,11 @@ bool Application::OnWindowClose(WindowCloseEvent &e)
 {
     m_Running = false;
     return true;
+}
+
+bool Application::OnWindowResize(WindowResizeEvent &e)
+{
+    int width = e.GetWidth(), height = e.GetHeight();
+    glViewport(0, 0, width, height);
+    return false;
 }

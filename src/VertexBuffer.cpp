@@ -1,6 +1,6 @@
 
 #include "VertexBuffer.h"
-#include "glad.h"
+#include <glad/glad.h>
 
 VertexBuffer::VertexBuffer(void *vertices, uint32_t size)
 {

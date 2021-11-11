@@ -7,10 +7,13 @@ class GameLayer : public Layer
 {
 public:
     GameLayer()
-        : Layer("Test"){};
+        : Layer("Game"){};
     void OnAttach() override
     {
+
         m_Camera = new Camera(glm::perspectiveFov(glm::radians(45.0f), 1280.0f, 720.0f, 0.1f, 10000.0f));
+
+        // Load all required assets
         m_Texture.reset(new Texture("./assets/textures/marble_bust_01_diff_4k.jpg"));
         m_NormalTexture.reset(new Texture("./assets/textures/marble_bust_01_nor_gl_4k.jpg"));
         m_Model.reset(new Model("./assets/models/marble_bust_01_4k.gltf"));
@@ -22,15 +25,20 @@ public:
         m_Light.ambient = {0.3f, 0.3f, 0.3f};
         m_Light.diffuse = {0.8f, 0.8f, 0.8f};
         m_Light.specular = {1.0f, 1.0f, 1.0f};
+
+        m_console.AddLog("Welcome to thatchek's Physically Based Renderer");
+        m_console.AddLog("Move around with WASD. Click and drag to change the camera's rotation. Examine the bust to see a prototype of the rendering & lighting model");
     }
     void OnUpdate(Timestep ts) override
     {
         m_Camera->Update(ts);
         auto viewProjection = m_Camera->GetProjectionMatrix() * m_Camera->GetViewMatrix();
-
+        // Setup environment
+        // TO DO: This should be handled by renderer via passing environment on BeginScene
         m_Model->getMaterial()->Set(m_Light);
         m_Model->getMaterial()->SetViewProjection(viewProjection);
         m_Model->getMaterial()->SetView(m_Camera->GetPosition());
+
         Renderer::BeginScene(*m_Camera);
         Renderer::Clear();
         m_Model->Render(ts);
@@ -38,7 +46,7 @@ public:
     }
     void OnEvent(Event &e) override
     {
-
+        // handle log events
         if (e.GetEventType() == EventType::AppLog)
         {
             AppLogEvent &event = (AppLogEvent &)e;

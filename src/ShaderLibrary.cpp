@@ -12,6 +12,8 @@ std::shared_ptr<Shader> &ShaderLibrary::Get(const std::string &name)
 {
     if (!(m_Shaders.find(name) == m_Shaders.end()))
         return m_Shaders[name];
+    else
+        assert(false);
 }
 
 void ShaderLibrary::Load(const std::string &path, const std::string &name)

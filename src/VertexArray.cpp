@@ -1,6 +1,6 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
-#include "glad.h"
+#include <glad/glad.h>
 
 // Helper function which will convert from custom shader data types to appropriate GL types
 static GLenum ShaderDataTypeToOpenGlBaseType(ShaderDataType type)
@@ -65,7 +65,7 @@ void VertexArray::AddVertexBuffer(const std::shared_ptr<VertexBuffer> &vertexBuf
                               element.GetComponentCount(),
                               ShaderDataTypeToOpenGlBaseType(element.Type),
                               element.Normalized ? GL_TRUE : GL_FALSE, layout.GetStride(),
-                              (const void *)element.Offset);
+                              (const uint32_t *)element.Offset);
         index++;
     }
     m_VertexBuffers.push_back(vertexBuffer);

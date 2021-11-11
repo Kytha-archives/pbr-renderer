@@ -13,10 +13,10 @@ A lightweight implementation of a physically based shading model for an OpenGL r
 - Layer and Overlay System ✔️
 - OpenGL primitive abstraction ✔️
 - Basic Camera controls ✔️
-- Event loop for user input, window events (resize, etc), and application events (Update, etc) ✔️ 
+- Event loop for user input, window events (resize, etc), and application events (Update, etc) ✔️
 - Load from disk obj/blend files containing mesh data ✔️
 - GLSL fragment and vertex shader compilation, linking, and execution ✔️
-- Super basic directional lighting (ambient and diffuse) ✔️ 
+- Super basic directional lighting (ambient and diffuse) ✔️
 - A PBR compliant material system capable of loading in albedo, normal, metallic, & roughness textures 🚧
 - PBR pipeline & shader programs 🚧
 
@@ -34,7 +34,7 @@ BDRF implementations, i.e, alternative normal distribution functions, geometry f
 
 # Internal Dependencies
 
-This is a list of all dependancies which are internal to the source code. You don't need to install any packages for these dependencies, since I have included the source code and wrote platform agnostic makefiles to compile. 
+This is a list of all dependancies which are internal to the source code. You don't need to install any packages for these dependencies, since I have included the source code and wrote platform agnostic makefiles to compile.
 
 ## [GLFW](https://github.com/glfw/glfw) - Open Source, multi-platform library for OpenGL
 
@@ -44,7 +44,6 @@ GLFW is a modern library suited for modern OpenGL. GLFW offers much finer contro
 
 An objective of this project is to achieve high performance rendering HD assets. A large bottleneck for performance will be the efficiency of our calculations, particularly floating point operations. I could roll my own math library similar to the exercise in assignment 1. However doing this would significantly impacted performance since it would not be utilizing SIMD (single instruction, multiple data) parallel processing. GLM offers OpenGL Shader Language compliant SIMD mathematics for blazing fast computations.
 
-
 ## [GLAD](https://glad.dav1d.de/) - Multi-Language GL/GLES/EGL/GLX/WGL Loader-Generator
 
 This project is built using modern OpenGL (shader-based rendering). Most platforms do not provide OpenGL libraries to link against. For example windows OpenGL library libopengl32 only supports OpenGL up to version 2.x. Therefore it is necessary to use a wrangler like GLAD to obtain the function pointers and macros for the Modern OpenGL code implemented by graphics card manufacturers.
@@ -53,7 +52,7 @@ This project is built using modern OpenGL (shader-based rendering). Most platfor
 
 The purpose of this project is to showcase the results of physically based rendering techniques. Spending time rolling my own GUI library would only be counter productive to this purpose. It is better to not reinvent the wheel and take advantage of this open-sourced MIT licensed GUI library so I can spend more time perfecting the graphics pipeline.
 
-# External Dependancies 
+# External Dependancies
 
 This is a list of dependancies which are external to the codebase. **You will need to install these packages in order to build this project**. I've included the bash commands for Windows, Ubuntu, and Debian platforms below. These packages are external due to their complexity and size.
 
@@ -63,15 +62,20 @@ High quality, HD models and meshes will be required to truly test the performanc
 
 ### Installing ASSIMP
 
-*Windows MSYS2* 
+_Windows MSYS2_
+
 ```bash
 pacman -S mingw-w64-x86_64-assimp
 ```
-*Debian*
+
+_Debian_
+
 ```bash
 pacman -S assimp
 ```
-*Ubuntu*
+
+_Ubuntu_
+
 ```bash
 sudo apt-get install assimp
 ```
@@ -80,17 +84,19 @@ sudo apt-get install assimp
 
 run `make debug` to build the project in debug mode, or run `make`/`make production` to build the project in production mode. The build artifacts will be in the `build` directory.
 
+Note: The first build will take longer because the dependencies need to be compiled. Subsequent builds will not take as long.
+
 # Architecture
 
 The codebase is quite large and very flat, which does not help convey the relationships between objects and the system they create. This section is intended to help convey the system as a whole and explain the "how" of the engine. The next section- "Design Designs", focuses more on the "why".
 
-## Application System Relational Diagram  
+## Application System Relational Diagram
 
-This diagram shows the general structure of the main components in the application flow. The Application is a singleton object, so it can only be instantiated once, and by doing so creates and owns a member Window. The Application also houses the main event loop where each layer in the layer stack is sequentially updated/rendered to the window.   
+This diagram shows the general structure of the main components in the application flow. The Application is a singleton object, so it can only be instantiated once, and by doing so creates and owns a member Window. The Application also houses the main event loop where each layer in the layer stack is sequentially updated/rendered to the window.
 
 The window object handles the OpenGL context, amongst other window properties (width, height, vsync, etc). This is where the engine interfaces with GLFW and GLAD to load in an OpenGL 4 context. By setting up callback functions, GLFW events are routed into the application where they are dispatched to the layer stack and polled by the input system.
 
-Each layer has the ability to poll inputs, update game/application logic, and render scenes via the Renderer. The Renderer is another singleton which any layer can interface with. A layer can upload an enviroment to the renderer (camera, lights, etc) and then submit any models to be rendered. 
+Each layer has the ability to poll inputs, update game/application logic, and render scenes via the Renderer. The Renderer is another singleton which any layer can interface with. A layer can upload an enviroment to the renderer (camera, lights, etc) and then submit any models to be rendered.
 
 The Renderer also houses a library of shaders. These shaders get loaded, compiled, and linked at the beginning of run-time and are avalible for use by other modules.
 
@@ -104,12 +110,11 @@ The diagram below depicts the architecture of the model / mesh / material system
 
 ![image](https://user-images.githubusercontent.com/33584092/141251215-83b1e876-6381-4b3e-98cd-393ec0a3963f.png)
 
-There are quite a few parts to this system. When instatiated, the model object will load in a assimp scene from a file on disk. It then processes this into multiple meshes. All vertex data for each mesh is processed into a vertex buffer with an opionated layout. At the minimum, the mesh must specify position and normal data for each vertex. The vertex buffer layout also accomadates for tangent, binormal, and texture coordinate data. The indices are also processed into an index buffer. These buffers are grouped togther to form a vertex array. In addition, Each mesh is capable of having it's own material (in future these materials would be in a shared library owned by the Model). Each material will be capable of storing multiple texture maps (albedo, normal, metallic, roughness). 
+There are quite a few parts to this system. When instatiated, the model object will load in a assimp scene from a file on disk. It then processes this into multiple meshes. All vertex data for each mesh is processed into a vertex buffer with an opionated layout. At the minimum, the mesh must specify position and normal data for each vertex. The vertex buffer layout also accomadates for tangent, binormal, and texture coordinate data. The indices are also processed into an index buffer. These buffers are grouped togther to form a vertex array. In addition, Each mesh is capable of having it's own material (in future these materials would be in a shared library owned by the Model). Each material will be capable of storing multiple texture maps (albedo, normal, metallic, roughness).
 
-The structure for the renderer was explained in the previous section, but this diagram demenstrates how the renderer relates to the model system. 
+The structure for the renderer was explained in the previous section, but this diagram demenstrates how the renderer relates to the model system.
 
 ## End-to-end Renderer Pipeline
+
 This diagram show's the end-to-end process of rendering a model, from program start-up, to the first frame rendering. This is a general overview of how models are loaded and rendered.
 ![image](https://user-images.githubusercontent.com/33584092/141259777-33f69470-b0da-4692-a851-5210aafcd11f.png)
-
-

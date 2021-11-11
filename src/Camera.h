@@ -28,9 +28,13 @@ public:
 
     glm::vec3 m_Position;
     glm::vec3 m_Rotation;
+
+    // Camera basis
     glm::vec3 m_Front;
     glm::vec3 m_Up;
     glm::vec3 m_Right;
+
+    // World constant
     glm::vec3 m_WorldUp;
 
     float m_Yaw;
@@ -38,6 +42,8 @@ public:
     float m_MouseSensitivity = 0.1f;
     float m_Pitch;
     float m_Zoom = 45.0f;
+
+    // Viewport size is required for projection calculation
     uint32_t m_ViewportWidth = 1280, m_ViewportHeight = 720;
     glm::mat4 m_ProjectionMatrix, m_ViewMatrix;
 

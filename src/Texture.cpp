@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "stb_image.h"
-#include "glad.h"
+#include <glad/glad.h>
 
 Texture::Texture(const std::string &filePath)
 {

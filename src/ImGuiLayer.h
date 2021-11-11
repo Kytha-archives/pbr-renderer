@@ -1,7 +1,7 @@
 #pragma once
 #include "Layer.h"
 
-
+// ImGuiLayer handles begining and ending ImGui frames
 class ImGuiLayer : public Layer
 {
 public:
@@ -15,4 +15,3 @@ public:
 	void Begin();
 	void End();
 };
-
