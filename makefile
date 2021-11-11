@@ -1,4 +1,4 @@
-LIBS= vendors/GLFW/bin/libglfw3.a vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lGLU -lGL -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lrt -ldl -lassimp
+LIBS=-lglfw vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lGLU -lGL -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lrt -ldl -lassimp
 CFLAGS=-std=c++11
 CC=g++
 EXEEXT=
@@ -6,7 +6,7 @@ RM=rm
 TARGETDIR=build
 BUILDDIR=bin-int
 ASSETDIR=assets
-INCLUDE=-Ivendors/GLFW/include -Ivendors/glm/include -Ivendors/ImGui/src -Ivendors/GLAD/include
+INCLUDE=-Ivendors/glm/include -Ivendors/ImGui/src -Ivendors/GLAD/include
 SRCDIR=src
 SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 ASSETS := $(wildcard $(ASSETDIR)/*)
@@ -17,7 +17,7 @@ TARGET= main
 # Windows (cygwin)
 ifeq "$(OS)" "Windows_NT"
 	EXEEXT=.exe
-	LIBS = vendors/GLFW/bin/libglfw3.a vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lopengl32 -lgdi32 -lassimp
+	LIBS = -lglfw3 vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lopengl32 -lgdi32 -lassimp
 else
 # OS X
 	OS := $(shell uname)
