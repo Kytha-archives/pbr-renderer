@@ -71,7 +71,7 @@ pacman -S mingw-w64-x86_64-assimp
 _Debian_
 
 ```bash
-pacman -S assimp
+sudo pacman -S assimp
 ```
 
 _Ubuntu_
