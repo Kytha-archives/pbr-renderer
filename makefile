@@ -41,7 +41,7 @@ directories:
 	@mkdir -p $(TARGETDIR)/$(ASSETDIR)
 
 
-all: cleaner directories assets imgui glfw glad $(TARGET)
+all: cleaner directories assets imgui glad $(TARGET)
 
 link: $(TARGET)
 
