@@ -1,5 +1,5 @@
 #include "Console.h"
-
+#include <algorithm>
 // THIS IMPLEMENTATION COPIED FROM "imguiDemo.cpp"
 // imguiDemo.cpp contains tons of GUI examples for easy plug-and-play
 
@@ -49,7 +49,7 @@ void Console::Draw(const char *title, bool *p_open)
 {
     ImGuiIO io = ImGui::GetIO();
 
-    int height = __max(io.DisplaySize.y / 5, 100);
+    int height = std::max(io.DisplaySize.y / 5, 100);
 
     ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, height));
     ImGui::SetNextWindowPos(ImVec2(0, io.DisplaySize.y - height));
