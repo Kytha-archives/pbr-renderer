@@ -49,7 +49,7 @@ void Console::Draw(const char *title, bool *p_open)
 {
     ImGuiIO io = ImGui::GetIO();
 
-    int height = std::max(io.DisplaySize.y / 5, 100);
+    int height = std::max(io.DisplaySize.y / 5, (float)(100.0));
 
     ImGui::SetNextWindowSize(ImVec2(io.DisplaySize.x, height));
     ImGui::SetNextWindowPos(ImVec2(0, io.DisplaySize.y - height));
