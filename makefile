@@ -1,4 +1,4 @@
-LIBS= -lglfw3 -lGLU -lGL -lgdi32 -lassimp
+LIBS= -lGLU -lGL -lgdi32 -lassimp
 CFLAGS=-std=c++11
 CC=g++
 EXEEXT=
@@ -6,7 +6,7 @@ RM=rm
 TARGETDIR=build
 BUILDDIR=bin-int
 ASSETDIR=assets
-INCLUDE=
+INCLUDE=-Ivendors/GLFW/include -Ivendors/glm/include
 SRCDIR=src
 SOURCES := $(wildcard $(SRCDIR)/*.cpp)
 ASSETS := $(wildcard $(ASSETDIR)/*)
@@ -19,12 +19,12 @@ $(info $(OBJECTS))
 # Windows (cygwin)
 ifeq "$(OS)" "Windows_NT"
 	EXEEXT=.exe
-	LIBS = -lglfw3 -lopengl32 -lgdi32 -lassimp
+	LIBS = vendors/GLFW/bin/libglfw3.a -lopengl32 -lgdi32 -lassimp
 else
 # OS X
 	OS := $(shell uname)
 	ifeq ($(OS), Darwin)
-	        LIBS = -lglfw3 -lassimp -framework Carbon -framework OpenGL -framework GLUT
+	        LIBS = -lassimp -framework Carbon -framework OpenGL -framework GLUT
 	endif
 endif
 
@@ -43,7 +43,9 @@ directories:
 	@mkdir -p $(TARGETDIR)/$(ASSETDIR)
 
 
-all: cleaner directories assets $(TARGET)
+all: cleaner directories assets glfw $(TARGET)
+
+link: $(TARGET)
 
 #Link
 $(TARGET): $(OBJECTS)
@@ -66,5 +68,8 @@ cleaner: clean
 $(TARGETDIR)/$(ASSETDIR)/%: $(ASSETDIR)/%
 	mkdir -p $(@D)
 	cp -r $< $@
+
+glfw: 
+	$(MAKE) -C vendors/GLFW
 
 assets: $(patsubst $(ASSETDIR)/%,$(TARGETDIR)/$(ASSETDIR)/%,$(ASSETS))
