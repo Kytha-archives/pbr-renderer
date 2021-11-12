@@ -36,10 +36,6 @@ BDRF implementations, i.e, alternative normal distribution functions, geometry f
 
 This is a list of all dependancies which are internal to the source code. You don't need to install any packages for these dependencies, since I have included the source code and wrote platform agnostic makefiles to compile.
 
-## [GLFW](https://github.com/glfw/glfw) - Open Source, multi-platform library for OpenGL
-
-GLFW is a modern library suited for modern OpenGL. GLFW offers much finer control over context creation and window attributes. FreeGLUT necessitates an inversion of control to handle it's event loop, whereas GLFW allows for us to define our own event loop; leading to more precise timing and lower latency.
-
 ## [GLM](https://github.com/g-truc/glm) - Header only C++ mathematics
 
 An objective of this project is to achieve high performance rendering HD assets. A large bottleneck for performance will be the efficiency of our calculations, particularly floating point operations. I could roll my own math library similar to the exercise in assignment 1. However doing this would significantly impacted performance since it would not be utilizing SIMD (single instruction, multiple data) parallel processing. GLM offers OpenGL Shader Language compliant SIMD mathematics for blazing fast computations.
@@ -54,7 +50,26 @@ The purpose of this project is to showcase the results of physically based rende
 
 # External Dependancies
 
-This is a list of dependancies which are external to the codebase. **You will need to install these packages in order to build this project**. I've included the bash commands for Windows, Ubuntu, and Debian platforms below. These packages are external due to their complexity and size.
+This is a list of dependancies which are external to the codebase. **You will need to install these packages in order to build this project**. I've included the bash commands for Windows, Ubuntu, and Debian platforms below. These packages are external because they interface with platform-specific APIs and thus have platform-specific dependencies themselves.
+
+## [GLFW](https://github.com/glfw/glfw) - Open Source, multi-platform library for OpenGL
+
+GLFW is a modern library suited for modern OpenGL. GLFW offers much finer control over context creation and window attributes. FreeGLUT necessitates an inversion of control to handle it's event loop, whereas GLFW allows for us to define our own event loop; leading to more precise timing and lower latency.
+
+### Installing GLFW
+
+_Windows MSYS2_
+
+```bash
+pacman -S mingw-w64-x86_64-glfw
+```
+
+_Linux_
+
+```bash
+sudo apt-get install libglfw3
+sudo apt-get install libglfw3-dev
+```
 
 ## [ASSIMP](https://github.com/assimp/assimp) - Open Asset Import Library
 
@@ -68,13 +83,7 @@ _Windows MSYS2_
 pacman -S mingw-w64-x86_64-assimp
 ```
 
-_Debian_
-
-```bash
-sudo pacman -S assimp
-```
-
-_Ubuntu_
+_Linux_
 
 ```bash
 sudo apt-get install assimp

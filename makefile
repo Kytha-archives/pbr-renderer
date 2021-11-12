@@ -17,12 +17,12 @@ TARGET= main
 # Windows (cygwin)
 ifeq "$(OS)" "Windows_NT"
 	EXEEXT=.exe
-	LIBS = -lglfw3 vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lopengl32 -lgdi32 -lassimp
+	LIBS =-lglfw3 vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lopengl32 -lgdi32 -lassimp
 else
 # OS X
 	OS := $(shell uname)
 	ifeq ($(OS), Darwin)
-	        LIBS = vendors/GLFW/bin/libglfw3.a vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lassimp -framework Carbon -framework OpenGL -framework GLUT
+	        LIBS = vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lassimp -framework Carbon -framework OpenGL -framework GLUT
 	endif
 endif
 
@@ -66,9 +66,6 @@ cleaner: clean
 $(TARGETDIR)/$(ASSETDIR)/%: $(ASSETDIR)/%
 	mkdir -p $(@D)
 	cp -r $< $@
-
-glfw: 
-	$(MAKE) -C vendors/GLFW
 
 imgui:
 	$(MAKE) -C vendors/ImGui
