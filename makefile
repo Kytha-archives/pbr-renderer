@@ -1,4 +1,4 @@
-LIBS=-lglfw vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lGLU -lGL -lXrandr -lXxf86vm -lXi -lXinerama -lX11 -lrt -ldl -lassimp
+LIBS=-lglfw vendors/ImGui/bin/libimgui.a vendors/GLAD/bin/libglad.a -lGLU -lGL -lXrandr -lX11 -lrt -ldl -lassimp
 CFLAGS=-std=c++11
 CC=g++
 EXEEXT=
