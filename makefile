@@ -43,6 +43,8 @@ directories:
 
 all: cleaner directories assets imgui glad $(TARGET)
 
+dirty: directories assets imgui glad $(TARGET)
+
 link: $(TARGET)
 
 #Link

@@ -28,6 +28,7 @@ public:
 
         m_console.AddLog("Welcome to thatchek's Physically Based Renderer");
         m_console.AddLog("Move around with WASD. Click and drag to change the camera's rotation. Examine the bust to see a prototype of the rendering & lighting model");
+        m_console.AddLog("If you cannot see the bust, it may be due to incompatible OpenGL drivers. Try switching to windows platform until issue is resolved.");
     }
     void OnUpdate(Timestep ts) override
     {
@@ -53,17 +54,31 @@ public:
             m_console.AddLog(event.m_msg.c_str());
         }
     }
+    // Where all the GUI for this scene is rendered
     virtual void OnImGuiRender() override
     {
+
+        ImGuiIO io = ImGui::GetIO();
 
         static bool p_open = true;
         m_console.Draw("Console", &p_open);
 
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
         Profiler::Stats stats = Application::Get().GetProfiler().GetStats();
         ImGui::Begin("Stats");
         ImGui::Text("Renderer: %s", stats.renderer.c_str());
         ImGui::Text("FPS: %d", stats.fps);
         ImGui::Text("Draw Calls: %d", stats.drawCalls);
+        ImGui::End();
+
+        int width = std::max(io.DisplaySize.x / 10, (float)(40.0));
+        ImGui::SetNextWindowPos(ImVec2(io.DisplaySize.x - width, 0));
+        ImGui::SetNextWindowSize(ImVec2(width, 100));
+        glm::vec3 position = m_Camera->GetPosition();
+        ImGui::Begin("Camera", (bool *)1, ImGuiWindowFlags_NoResize);
+        ImGui::Text("X: %f", position.x);
+        ImGui::Text("Y: %f", position.y);
+        ImGui::Text("Z: %f", position.z);
         ImGui::End();
     }
 

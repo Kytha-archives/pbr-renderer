@@ -5,7 +5,7 @@
 
 Camera::Camera(const glm::mat4 &projectionMatrix) : m_ProjectionMatrix(projectionMatrix)
 {
-    m_Position = glm::vec3{0, 0, 0};
+    m_Position = glm::vec3{0, 0.3, 0.8};
     m_WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
     m_Yaw = -90.0f;
     m_Pitch = 0.0f;

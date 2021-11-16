@@ -95,6 +95,9 @@ run `make debug` to build the project in debug mode, or run `make`/`make product
 
 Note: The first build will take longer because the dependencies need to be compiled. Subsequent builds will not take as long.
 
+⚠️ I did my development on Windows. I've tested compiling and linking on Linux so their shouldn't be any problems  
+to that effect in a linux environment. However depending on your setup, there is a possibility that the shaders I have written are not compatible with your version of OpenGL. If this is a the case (the model of Emperor Trajan does not appear) consider switching to a windows environment. Hopefully this issue will be fixed soon.
+
 # Architecture
 
 The codebase is quite large and very flat, which does not help convey the relationships between objects and the system they create. This section is intended to help convey the system as a whole and explain the "how" of the engine. The next section- "Design Designs", focuses more on the "why".
@@ -105,7 +108,7 @@ This diagram shows the general structure of the main components in the applicati
 
 The window object handles the OpenGL context, amongst other window properties (width, height, vsync, etc). This is where the engine interfaces with GLFW and GLAD to load in an OpenGL 4 context. By setting up callback functions, GLFW events are routed into the application where they are dispatched to the layer stack and polled by the input system.
 
-Each layer has the ability to poll inputs, update game/application logic, and render scenes via the Renderer. The Renderer is another singleton which any layer can interface with. A layer can upload an enviroment to the renderer (camera, lights, etc) and then submit any models to be rendered.
+Each layer has the ability to poll inputs, update game/application logic, and render scenes via the Renderer. The Renderer is another singleton which any layer can interface with. A layer can upload an environment to the renderer (camera, lights, etc) and then submit any models to be rendered.
 
 The Renderer also houses a library of shaders. These shaders get loaded, compiled, and linked at the beginning of run-time and are avalible for use by other modules.
 
@@ -119,9 +122,9 @@ The diagram below depicts the architecture of the model / mesh / material system
 
 ![image](https://user-images.githubusercontent.com/33584092/141251215-83b1e876-6381-4b3e-98cd-393ec0a3963f.png)
 
-There are quite a few parts to this system. When instatiated, the model object will load in a assimp scene from a file on disk. It then processes this into multiple meshes. All vertex data for each mesh is processed into a vertex buffer with an opionated layout. At the minimum, the mesh must specify position and normal data for each vertex. The vertex buffer layout also accomadates for tangent, binormal, and texture coordinate data. The indices are also processed into an index buffer. These buffers are grouped togther to form a vertex array. In addition, Each mesh is capable of having it's own material (in future these materials would be in a shared library owned by the Model). Each material will be capable of storing multiple texture maps (albedo, normal, metallic, roughness).
+There are quite a few parts to this system. When instantiated, the model object will load in a assimp scene from a file on disk. It then processes this into multiple meshes. All vertex data for each mesh is processed into a vertex buffer with an opinionated layout. At the minimum, the mesh must specify position and normal data for each vertex. The vertex buffer layout also accommodates for tangent, binormal, and texture coordinate data. The indices are also processed into an index buffer. These buffers are grouped together to form a vertex array. In addition, Each mesh is capable of having it's own material (in future these materials would be in a shared library owned by the Model). Each material will be capable of storing multiple texture maps (albedo, normal, metallic, roughness).
 
-The structure for the renderer was explained in the previous section, but this diagram demenstrates how the renderer relates to the model system.
+The structure for the renderer was explained in the previous section, but this diagram demonstrates how the renderer relates to the model system.
 
 ## End-to-end Renderer Pipeline
 
