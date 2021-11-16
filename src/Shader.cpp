@@ -35,6 +35,7 @@ std::string Shader::ReadShaderFromFile(const std::string &filepath) const
 
 void Shader::CompileAndUploadShader()
 {
+    // CODE COPIED FROM OPENGL WIKI
     std::vector<GLuint> shaderRendererIDs;
 
     GLuint program = glCreateProgram();
@@ -111,16 +112,24 @@ GLenum Shader::ShaderTypeFromString(const std::string &type)
 std::unordered_map<GLenum, std::string> Shader::PreProcess(const std::string &source)
 {
     std::unordered_map<GLenum, std::string> shaderSources;
+    // token to indicate shader type
     const char *typeToken = "#type";
     size_t typeTokenLength = strlen(typeToken);
     size_t pos = source.find(typeToken, 0);
+
     while (pos != std::string::npos)
     {
+        // Parse current line
+        // This will always be a shader type declartion
         size_t eol = source.find_first_of("\r\n", pos);
         size_t begin = pos + typeTokenLength + 1;
         std::string type = source.substr(begin, eol - begin);
+
+        // Jump to next type declation
         size_t nextLinePos = source.find_first_not_of("\r\n", eol);
         pos = source.find(typeToken, nextLinePos);
+
+        // Add everything between inital position and jump to map as a new shader program
         shaderSources[ShaderTypeFromString(type)] = source.substr(nextLinePos, pos - (nextLinePos == std::string::npos ? source.size() - 1 : nextLinePos));
     }
     return shaderSources;

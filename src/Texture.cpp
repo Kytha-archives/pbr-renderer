@@ -7,6 +7,8 @@ Texture::Texture(const std::string &filePath)
     int width, height, nrChannels;
     unsigned char *data = stbi_load(filePath.c_str(), &width, &height, &nrChannels, 0);
     GLenum format = GL_RGB;
+
+    // Determine type of image formatting
     switch (nrChannels)
     {
     case STBI_grey:

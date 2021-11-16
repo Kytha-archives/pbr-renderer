@@ -67,6 +67,7 @@ public:
         Profiler::Stats stats = Application::Get().GetProfiler().GetStats();
         ImGui::Begin("Stats");
         ImGui::Text("Renderer: %s", stats.renderer.c_str());
+        ImGui::Text("Version: %s", stats.version.c_str());
         ImGui::Text("FPS: %d", stats.fps);
         ImGui::Text("Draw Calls: %d", stats.drawCalls);
         ImGui::End();

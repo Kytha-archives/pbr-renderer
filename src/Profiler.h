@@ -15,9 +15,11 @@ public:
         float frameTime = 0;
         int drawCalls;
         std::string renderer;
+        std::string version;
     };
 
     void SetRenderer(std::string renderer);
+    void SetVersion(std::string version);
     Profiler::Stats GetStats();
 
 private:

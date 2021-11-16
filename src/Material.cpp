@@ -7,6 +7,7 @@ Material::Material(std::shared_ptr<Shader> shader) : m_Shader(shader)
 
 void Material::Set(const std::string &name, std::shared_ptr<Texture> texture)
 {
+    // Find where the texture is located and upload location and size info to shader
     m_Textures.push_back(texture);
     int32_t location = m_Shader->GetUniformLocation(name);
     glUniform1i(location, 0);
@@ -16,6 +17,7 @@ void Material::Set(const std::string &name, std::shared_ptr<Texture> texture)
 
 void Material::Set(DirectionalLight light)
 {
+    // Uploads light data to shader
     m_Shader->Bind();
     m_Shader->UploadUniformFloat3("dirLight.direction", light.direction);
     m_Shader->UploadUniformFloat3("dirLight.ambient", light.ambient);

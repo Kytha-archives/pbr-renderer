@@ -15,8 +15,14 @@ public:
     std::string ReadShaderFromFile(const std::string &filepath) const;
     int32_t GetUniformLocation(const std::string &name) const;
     void CompileAndUploadShader();
+
+    // Preprocess single source string into multiple shader sources
     std::unordered_map<GLenum, std::string> PreProcess(const std::string &source);
+
+    // Mapping of strings to shader types. Currently only supports "vertex" and "fragment"
     GLenum ShaderTypeFromString(const std::string &type);
+
+    // These are upload functions to upload uniforms to shader. One for each data type
     void UploadUniformInt(uint32_t location, int32_t value);
     void UploadUniformIntArray(uint32_t location, int32_t *values, int32_t count);
     void UploadUniformFloat(uint32_t location, float value);

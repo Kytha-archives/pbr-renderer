@@ -4,7 +4,7 @@
 #include <vector>
 
 // A layerstack will manage a vector of layers. Insertion happens in the center to allow for overlays
-// Overlays will always render ontop of every layer
+// Overlays will always render on top of every layer
 class LayerStack
 {
 public:
@@ -21,6 +21,6 @@ public:
 
 private:
     std::vector<Layer *> m_Layers;
-    // Stores index to the top of the layer portion of th layerStack
+    // Stores index to the top of the layer portion of the layerStack
     unsigned int m_LayerInsertIndex = 0;
 };

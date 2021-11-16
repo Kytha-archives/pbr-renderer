@@ -39,6 +39,7 @@ void Window::Init()
     glfwMakeContextCurrent(m_Window);
     glfwSetWindowUserPointer(m_Window, &m_Data);
 
+    // Initialize GLAD to get latest verion of OpenGL supported
     if (!s_GLADInitialized)
     {
         s_GLADInitialized = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
@@ -50,8 +51,12 @@ void Window::Init()
     std::stringstream ss;
     ss << glGetString(GL_RENDERER);
     profiler.SetRenderer(ss.str());
+    ss.str("");
+    ss << glGetString(GL_VERSION);
+    profiler.SetVersion(ss.str());
 
     // Set GLFW callbacks
+    // This is essentially routing the events into our event loop via our event callback
     glfwSetWindowSizeCallback(m_Window, [](GLFWwindow *window, int width, int height)
                               {
                                   WindowData &data = *(WindowData *)glfwGetWindowUserPointer(window);

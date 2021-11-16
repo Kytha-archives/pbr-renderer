@@ -2,8 +2,7 @@
 
 #include "Event.h"
 
-
-
+// MouseEvents created in simaliar style to KeyEvents in KeyEvents.h
 class MouseMovedEvent : public Event
 {
 public:
@@ -20,7 +19,7 @@ public:
     }
 
     EVENT_CLASS_TYPE(MouseMoved)
-        EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
+    EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)
 
 private:
     float m_MouseX, m_MouseY;
@@ -48,8 +47,9 @@ private:
     float m_XOffset, m_YOffset;
 };
 
-class MouseButtonEvent : public Event {
-public :
+class MouseButtonEvent : public Event
+{
+public:
     inline int GetMouseButton() const { return m_Button; }
 
     EVENT_CLASS_CATEGORY(EventCategoryMouse | EventCategoryInput)

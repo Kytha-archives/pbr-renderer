@@ -35,6 +35,7 @@ void Renderer::Submit(const std::shared_ptr<VertexArray> &vertexArray)
 {
     vertexArray->Bind();
     Profiler &profiler = Application::Get().GetProfiler();
+    // Increment the draw calls for this frame
     profiler.DrawCall();
     glDrawElements(GL_TRIANGLES, vertexArray->GetIndexBuffer()->getCount(), GL_UNSIGNED_INT, nullptr);
     vertexArray->Unbind();

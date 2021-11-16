@@ -5,14 +5,18 @@ Model::Model(const std::string &filepath)
 {
     Assimp::Importer importer;
     const aiScene *scene = importer.ReadFile(filepath, aiProcess_Triangulate | aiProcess_GenSmoothNormals | aiProcess_FlipUVs | aiProcess_CalcTangentSpace);
-    // check for errors
+    // check for errors when loading asset
     if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // if is Not Zero
     {
         std::cout << "ERROR::ASSIMP:: " << importer.GetErrorString() << std::endl;
         return;
     }
+
     m_Directory = filepath.substr(0, filepath.find_last_of('/'));
+
+    // Default shader for models
     m_Shader = Renderer::GetShaderLibrary().Get("pbr_shader");
+
     m_Material.reset(new Material(m_Shader));
     processNode(scene->mRootNode, scene);
 }
