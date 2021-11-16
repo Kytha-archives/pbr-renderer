@@ -32,6 +32,77 @@ A lightweight implementation of a physically based shading model for an OpenGL r
 An additional goal (time permitting) would be to benchmark the performance of different
 BDRF implementations, i.e, alternative normal distribution functions, geometry functions, etc. So, an ideal feature would be for the user to be able to hot swap different implementations during runtime.
 
+# Current State
+
+![image](https://user-images.githubusercontent.com/33584092/141936457-b4410e16-4f4e-4289-80e2-f4d5a51fdf17.png)
+
+The program renders a 4k model and texture of a bust depicting Julius Ceaser into the lighting enviroment. This is done via the following vertex and fragment shaders. The shader calculates ambient and diffuse lighting using texture normal maps.
+
+```bash
+#type vertex
+#version 330 core
+layout (location = 0) in vec3 a_Position;
+layout (location = 1) in vec3 a_Normal;
+layout (location = 2) in vec3 a_Tangent;
+layout (location = 3) in vec3 a_Binormal;
+layout (location = 4) in vec2 a_TexCoord;
+// TO DO: Upload model matrix to transform models
+
+uniform mat4 u_ViewProjection;
+out vec2 TexCoord;
+
+void main()
+{
+    // Calculate final gl (screen) position
+    // TO DO: Include model matrix in calculation
+    gl_Position = u_ViewProjection * vec4(a_Position, 1.0);
+
+    // Pass TexCoords down the pipeline. Will be needed in fragment shader
+    TexCoord = a_TexCoord;
+}
+
+#type fragment
+#version 330 core
+out vec4 FragColor;
+
+struct DirLight {
+    vec3 direction;
+    vec3 ambient;
+    vec3 diffuse;
+    vec3 specular;
+};  
+
+
+in vec2 TexCoord;
+
+uniform sampler2D u_AlbedoTexture;
+uniform sampler2D u_NormalTexture;
+uniform sampler2D u_MetalnessTexture;
+uniform sampler2D u_RoughnessTexture;
+
+uniform DirLight dirLight;
+uniform vec3 u_View;
+
+void main()
+{
+    // ambient
+    vec3 ambient = dirLight.ambient * vec3(texture(u_AlbedoTexture, TexCoord));
+
+    // Transform normals from rgb encoding to world vectors
+    vec3 norm = texture(u_NormalTexture, TexCoord).rgb;
+    norm = normalize(norm * 2.0 - 1.0);
+
+    // Calculate diffuse light based on light direction and fragment normal
+    vec3 direction = normalize(-dirLight.direction);
+    float diff = max(dot(norm, direction), 0.0);
+    vec3 diffuse = dirLight.diffuse * diff * vec3(texture(u_AlbedoTexture, TexCoord));
+
+    // Superimpose lighting components
+    vec3 result = diffuse + ambient;
+    FragColor = vec4(result, 1.0);
+}
+```
+
 # Internal Dependencies
 
 This is a list of all dependancies which are internal to the source code. You don't need to install any packages for these dependencies, since I have included the source code and wrote platform agnostic makefiles to compile.
@@ -64,11 +135,16 @@ _Windows MSYS2_
 pacman -S mingw-w64-x86_64-glfw
 ```
 
-_Linux_
+_Linux apt-get_
 
 ```bash
 sudo apt-get install libglfw3
 sudo apt-get install libglfw3-dev
+```
+_Linux pacman_
+
+```bash
+pacman -S glfw-x11
 ```
 
 ## [ASSIMP](https://github.com/assimp/assimp) - Open Asset Import Library
@@ -83,10 +159,16 @@ _Windows MSYS2_
 pacman -S mingw-w64-x86_64-assimp
 ```
 
-_Linux_
+_Linux apt-get_
 
 ```bash
 sudo apt-get install assimp
+```
+
+_Linux pacman_
+
+```bash
+pacman -S assimp
 ```
 
 # Build
@@ -96,7 +178,7 @@ run `make debug` to build the project in debug mode, or run `make`/`make product
 Note: The first build will take longer because the dependencies need to be compiled. Subsequent builds will not take as long.
 
 ⚠️ I did my development on Windows. I've tested compiling and linking on Linux so their shouldn't be any problems  
-to that effect in a linux environment. However depending on your setup, there is a possibility that the shaders I have written are not compatible with your version of OpenGL. If this is a the case (the model of Emperor Trajan does not appear) consider switching to a windows environment. Hopefully this issue will be fixed soon.
+to that effect in a linux environment. However depending on your setup, there is a possibility that the shaders I have written are not compatible with your version of OpenGL. If this is a the case (the model of Julius Ceaser does not appear) consider switching to a windows environment. Hopefully this issue will be fixed soon.
 
 # Architecture
 
